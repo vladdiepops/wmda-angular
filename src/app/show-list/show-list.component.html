@@ -1,0 +1,100 @@
+<div class="container" [hidden]="!statusShowList">
+  <button class="sort-btn" (click)="sortList()">Sort By Order</button>
+
+  <div class="question" *ngFor="let question of questionList">
+    <div class="question-part">
+      <label for="questionText">Question Text: </label>
+
+      <p
+        name="questionText"
+        *ngIf="!editMode || (editMode && orderNo !== question.question_order)"
+      >
+        {{ question.question_text }}
+      </p>
+
+      <input
+        *ngIf="editMode && orderNo === question.question_order"
+        type="text"
+        name="questionText"
+        id="questionText"
+        [value]="question.question_text"
+        #questionText
+        (keyup)="onEditQuestionText(questionText.value)"
+      />
+    </div>
+
+    <div class="question-part">
+      <label for="questionOrder">Question Order: </label>
+
+      <p
+        name="questionOrder"
+        *ngIf="!editMode || (editMode && orderNo !== question.question_order)"
+      >
+        {{ question.question_order }}
+      </p>
+
+      <input
+        *ngIf="editMode && orderNo === question.question_order"
+        type="number"
+        min="1"
+        name="questionOrder"
+        id="questionOrder"
+        [value]="question.question_order"
+        #questionOrder
+        (keyup)="onEditQuestionOrder(questionOrder.value)"
+      />
+
+      <!-- <div *ngIf="questionOrder.invalid" class="alert alert-danger">
+        <p *ngIf="!isNumber(questionOrder.value)">
+          Must add an order to the question!
+        </p>
+        <p *ngIf="questionOrder.value <= 0 && isNumber(questionOrder.value)">
+          Number must be a positive integer!
+        </p>
+      </div> -->
+    </div>
+
+    <div class="question-part">
+      <label for="questionResponse">Question Response: </label>
+
+      <p
+        name="questionResponse"
+        *ngIf="!editMode || (editMode && orderNo !== question.question_order)"
+      >
+        {{ question.question_response_type }}
+      </p>
+
+      <select
+        *ngIf="editMode && orderNo === question.question_order"
+        id="typeResponse"
+        name="typeResponse"
+        #questionType
+        (change)="onEditQuestionType(questionType.value)"
+      >
+        <option
+          [value]="tp"
+          *ngFor="let tp of typesRes"
+          [selected]="tp === question.question_response_type"
+        >
+          {{ tp }}
+        </option>
+      </select>
+    </div>
+
+    <button
+      class="edit-btn"
+      *ngIf="!editMode || (editMode && orderNo !== question.question_order)"
+      (click)="onEdit(question.question_order)"
+    >
+      Edit
+    </button>
+
+    <button
+      class="save-btn"
+      *ngIf="editMode && orderNo === question.question_order"
+      (click)="onSave(question.question_order)"
+    >
+      Save
+    </button>
+  </div>
+</div>

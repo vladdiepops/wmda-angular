@@ -1,0 +1,76 @@
+<div class="container" [hidden]="!statusCreateQuestion">
+  <h1>Create Question</h1>
+
+  <form #formData="ngForm">
+    <div class="form-group">
+      <label for="content">Question content:</label>
+      <textarea
+        #text="ngModel"
+        class="form-control ng-untouched ng-pristine ng-valid"
+        type="text"
+        name="content"
+        id="content"
+        placeholder="What is your question about?"
+        required
+        ngModel
+      >
+      </textarea>
+      <div *ngIf="text.invalid && !text.untouched" class="alert alert-danger">
+        Must add a question!
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="order">Order of the question:</label>
+      <input
+        #order="ngModel"
+        class="form-control ng-untouched ng-pristine ng-valid"
+        type="number"
+        id="order"
+        name="order"
+        placeholder="Describe the relative order of the question."
+        required
+        min="1"
+        ngModel
+      />
+      <div *ngIf="order.invalid && order.touched" class="alert alert-danger">
+        <p *ngIf="!isNumber(order.value)">Must add an order to the question!</p>
+        <p *ngIf="order.value <= 0 && isNumber(order.value)">
+          Number must be a positive integer!
+        </p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="typeResponse">Response type:</label>
+      <select
+        #select="ngModel"
+        class="form-control ng-untouched ng-pristine ng-valid"
+        id="typeResponse"
+        name="typeResponse"
+        ngModel
+        required
+      >
+        <option [value]="tp" *ngFor="let tp of typesRes">{{ tp }}</option>
+      </select>
+      <div
+        *ngIf="select.invalid && !select.untouched"
+        class="alert alert-danger"
+      >
+        Must select a response type!
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      (click)="onSubmit(formData)"
+      [disabled]="!formData.form.valid"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+
+<div [hidden]="!submitted" class="after-submission">
+  <h2>Your answers were submitted!</h2>
+</div>
