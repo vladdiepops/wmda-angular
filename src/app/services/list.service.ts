@@ -25,7 +25,7 @@ export class ListService {
   addQuestion(question: Question) {
     this.httpService
       .saveQuestion(question)
-      .subscribe((res) => this.questionList.push(res));
+      .subscribe((res) => this.questionList.push(res.question));
   }
 
   fetchQuestionsArray() {
